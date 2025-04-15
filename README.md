@@ -11,8 +11,6 @@ Given a video with four paired modalities, (a) we first encode it into latents u
 
 Code is coming soon.
 
-If you have any questions about this project or want any discussions, feel free to drop me an [📧 db.xi@zju.edu.cn](mailto:db.xi@zju.edu.cn).
-
 
 
 ## Citation
