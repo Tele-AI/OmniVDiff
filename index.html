@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title> OmniVDiff: Omni Controllable Video Diffusion for Generation and Understanding</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/logo.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+
+  <script>
+    let currentIndex = 0;
+    let autoplayInterval = null;
+
+    function updateVideoPosition() {
+      const track = document.getElementById('videoTrack');
+      const containerWidth = document.querySelector('.video-carousel').offsetWidth;
+      track.style.transform = `translateX(-${currentIndex * containerWidth}px)`;
+      updateDots();
+    }
+
+    function nextVideo() {
+      stopAutoplay(); // 手动切换时暂停自动轮播
+      const total = document.querySelectorAll('.video-item').length;
+      currentIndex = (currentIndex + 1) % total;
+      updateVideoPosition();
+    }
+
+    function prevVideo() {
+      stopAutoplay(); // 手动切换时暂停自动轮播
+      const total = document.querySelectorAll('.video-item').length;
+      currentIndex = (currentIndex - 1 + total) % total;
+      updateVideoPosition();
+    }
+
+    function renderDots() {
+      const container = document.getElementById('dotContainer');
+      const total = document.querySelectorAll('.video-item').length;
+      for (let i = 0; i < total; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        dot.addEventListener('click', () => {
+          stopAutoplay();
+          currentIndex = i;
+          updateVideoPosition();
+        });
+        container.appendChild(dot);
+      }
+    }
+
+    function updateDots() {
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentIndex);
+      });
+    }
+
+    function startAutoplay(interval = 5000) {
+      autoplayInterval = setInterval(() => {
+        const total = document.querySelectorAll('.video-item').length;
+        currentIndex = (currentIndex + 1) % total;
+        updateVideoPosition();
+      }, interval);
+    }
+
+    function stopAutoplay() {
+      clearInterval(autoplayInterval);
+    }
+
+    window.addEventListener('resize', updateVideoPosition);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderDots();
+      updateVideoPosition();
+      startAutoplay(); // 启动自动轮播
+    });
+  </script>
+
+  <script>
+    function initCarousel(wrapper) {
+      const track = wrapper.querySelector('.video-track');
+      const items = wrapper.querySelectorAll('.video-item');
+      const dotsContainer = wrapper.querySelector('.dot-overlay');
+      const prevBtn = wrapper.querySelector('.prev-btn');
+      const nextBtn = wrapper.querySelector('.next-btn');
+      let currentIndex = 0;
+      let autoplayTimer = null;
+
+      function updatePosition() {
+        const width = wrapper.querySelector('.video-carousel').offsetWidth;
+        track.style.transform = `translateX(-${currentIndex * width}px)`;
+        updateDots();
+      }
+
+      function updateDots() {
+        const dots = wrapper.querySelectorAll('.dot');
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function goTo(index) {
+        currentIndex = index;
+        updatePosition();
+        stopAutoplay();
+      }
+
+      function next() {
+        currentIndex = (currentIndex + 1) % items.length;
+        updatePosition();
+      }
+
+      function prev() {
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        updatePosition();
+      }
+
+      function renderDots() {
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < items.length; i++) {
+          const dot = document.createElement('span');
+          dot.className = 'dot';
+          dot.addEventListener('click', () => goTo(i));
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      function startAutoplay() {
+        autoplayTimer = setInterval(() => next(), 5000);
+      }
+
+      function stopAutoplay() {
+        clearInterval(autoplayTimer);
+      }
+
+      renderDots();
+      updatePosition();
+      startAutoplay();
+
+      prevBtn.addEventListener('click', () => { prev(); stopAutoplay(); });
+      nextBtn.addEventListener('click', () => { next(); stopAutoplay(); });
+      window.addEventListener('resize', updatePosition);
+    }
+
+    // 初始化所有轮播组
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.video-carousel-wrapper').forEach(wrapper => {
+        initCarousel(wrapper);
+      });
+    });
+  </script>
+
+</head>
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="">
+          <span class="icon">
+            <i class="fas fa-home"></i>
+          </span>
+        </a>
+
+
+      </div>
+
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">OmniVDiff: Omni Controllable Video Diffusion for Generation and
+              Understanding</h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?hl=en&user=7H29mf4AAAAJ">Dianbing Xi</a><sup>1,2,*</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://jiepengwang.github.io/">Jiepeng Wang</a><sup>2,*,‡</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://akira-l.github.io/">Yuanzhi Liang</a><sup>2</sup>,
+              </span>
+              <span class="author-block">
+                <!-- <a>Xi Qiu</a><sup>2</sup>, -->
+                <p>Xi Qiu<sup>2</sup>,</p>
+              </span>
+              <span class="author-block">
+                <a href="https://person.zju.edu.cn/en/yuchihuo">Yuchi Huo</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="http://www.cad.zju.edu.cn/home/rwang/">Rui Wang</a><sup>1,†</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?hl=en&user=PXlNTokAAAAJ">Chi Zhang</a><sup>2,†</sup>,
+              </span>
+              <span class="author-block">
+                <a href="http://xuelongli.cn/en.php">Xuelong Li</a><sup>2,†</sup>
+              </span>
+            </div>
+
+            <p><sup>*</sup> Equal contribution. <sup>†</sup> Corresponding author. <sup>‡</sup> Project leader. </p>
+
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Zhejiang University,</span>
+              <span class="author-block"><sup>2</sup>Institute of Artificial Intelligence, China Telecom (TeleAI)</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https:xxxx" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https:xxxx" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https:xxxx" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+
+        <img id="teaser" src="./static/images/fig1_teaser.png" alt="Teaser Image" style="height: 80%;">
+        <h2 class="subtitle has-text-centered">
+          <span class="dnerf">OmniVDiff</span> enables controllable video generation and understanding in a unified
+          video diffusion framework.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              In this paper, we propose a novel framework for controllable video diffusion, <span
+              class="dnerf">OmniVDiff</span>, 
+              aiming to synthesize and comprehend multiple video visual content in a single diffusion model.
+            </p>
+            <p>
+              To achieve this, <span
+              class="dnerf">OmniVDiff</span> treats all video visual modalities in the color space to learn a joint distribution, while employing an adaptive control strategy that dynamically adjusts the role of each visual modality during the diffusion process, either as a generation modality or a conditioning modality.
+              This allows flexible manipulation of each modality's role, enabling support for a wide range of tasks.
+              Consequently, our model supports three key functionalities: (1) Text-conditioned video generation: multi-modal visual video sequences (i.e., rgb, depth, canny, segmentaion) are generated based on the text conditions in one diffusion process; (2) Video understanding: <span
+              class="dnerf">OmniVDiff</span> can estimate the depth, canny map, and semantic segmentation across the input rgb frames while ensuring coherence with the rgb input; and (3) X-conditioned video generation: <span
+              class="dnerf">OmniVDiff</span> generates videos conditioned on fine-grained attributes (e.g., depth maps or segmentation maps). 
+            </p>
+            <p>
+              By integrating these diverse tasks into a unified video diffusion framework, <span
+              class="dnerf">OmniVDiff</span> enhances the flexibility and scalability for controllable video diffusion, making it an effective tool for a variety of downstream applications, such as video-to-video translation. 
+              Extensive experiments demonstrate the effectiveness of our approach, highlighting its potential for various video-related applications.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+      <!-- Method overview. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Method overview</h2>
+          <img id="teaser" src="./static/images/fig2_method.jpg" alt="Teaser Image" style="height: 80%;">
+        </div>
+      </div>
+      <div class="content has-text-justified">
+        <p>
+          Given a video with four paired modalities, (a) we first encode it into latents using a shared 3D-VAE encoder;
+          (b) then, concatenate them along the channel dimension and apply noise for video diffusion, where the denoised
+          latents are then decoded into their respective modalities via modality-specific decoding heads; (c) Finally,
+          each modality can be reconstructed into color space by the 3D-VAE decoder .
+          During inference, the model enables various tasks by dynamically adjusting the role of each modality: (d)
+          text-to-video generation, where all modalities are denoised from pure noise and (e) X-conditioned generation,
+          where the condition X is given and other modalities are denoised from pure noise. If X is RGB modality, the
+          model will perform generative understanding.
+        </p>
+      </div>
+
+
+
+
+
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+
+
+        <!-- Results. -->
+
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">Results: Generation and Understanding</h2>
+            <!-- Text to mul-modality video generation. -->
+            <h3 class="title is-4">Text-conditioned multi-modality video generation</h3>
+            <div class="content has-text-justified">
+              <p>
+                Using <span class="dnerf">OmniVDiff</span>, you can generate more coherent and temporally consistent video sequences using only text prompts.
+              </p>
+            </div>
+
+            <div class="video-carousel-wrapper">
+              <div class="video-carousel">
+                <div class="video-track">
+                  <div class="video-item">
+                    <video
+                      src="./static/results/1-text to mul-modality  video generation/validation-a serene coastal landscap-51b2f_merge_-1_seed=999999.mp4"
+                      autoplay loop muted controls></video>
+                  </div>
+                  <div class="video-item"><video
+                      src="./static/results/1-text to mul-modality  video generation/validation-A young woman wearing a p-4aa11.mp4"
+                      autoplay loop muted controls></video>
+                  </div>
+                  <div class="video-item"><video
+                      src="./static/results/1-text to mul-modality  video generation/validation-A blue sports car is driv-dba9b_merge_-1_seed=999999.mp4"
+                      autoplay loop muted controls></video>
+                  </div>
+                  <div class="video-item"><video
+                    src="./static/results/1-text to mul-modality  video generation/validation-A bald man with glasses i-70eb3.mp4"
+                    autoplay loop muted controls></video>
+                </div>
+                  <div class="video-item"><video
+                      src="./static/results/1-text to mul-modality  video generation/validation-a scene of two large nava-83514_merge_-1_seed=999999.mp4"
+                      autoplay loop muted controls></video>
+                  </div>
+                  <div class="video-item"><video
+                      src="./static/results/1-text to mul-modality  video generation/validation-A-young-man-with-tousled--1265a.mp4"
+                      autoplay loop muted controls></video>
+                  </div>
+                </div>
+                <div class="dot-overlay"></div>
+              </div>
+              <div class="video-controls">
+                <button class="nav-button prev-btn">‹</button>
+                <button class="nav-button next-btn">›</button>
+              </div>
+            </div>
+
+
+            <!--/ Text to mul-modality video generation. -->
+
+
+            <!-- Controllable video generation. -->
+            <h3 class="title is-4">Controllable video generation</h3>
+            <div class="content has-text-justified">
+              <p>
+                Using <span class="dnerf">OmniVDiff</span>, you can generate more coherent and temporally 
+                consistent video sequences conditioned on various inputs such as depth, canny edges, and segmentation.
+              </p>
+            </div>
+            <h4 class="title is-5">Depth-conditioned video generation</h3>
+              <div class="video-carousel-wrapper">
+                <div class="video-carousel">
+                  <div class="video-track">
+                    <div class="video-item">
+                      <video
+                        src="./static/results/2-depth_condition  video generation/validation-A child wearing a large b-35ee7_merge_1_seed=999999.mp4"
+                        autoplay loop muted controls></video>
+                    </div>
+                    <div class="video-item"><video
+                      src="./static/results/2-depth_condition  video generation/validation-a close-up view of a smal-9ce83_merge_1_seed=999999.mp4"
+                      autoplay loop muted controls></video>
+                    </div>
+                    <div class="video-item"><video
+                        src="./static/results/2-depth_condition  video generation/validation-a man and a woman sitting-e3dec_merge_1_seed=42.mp4"
+                        autoplay loop muted controls></video>
+                    </div>
+                    <div class="video-item"><video
+                        src="./static/results/2-depth_condition  video generation/validation-a variety of beautifully -6956c_merge_1_seed=42.mp4"
+                        autoplay loop muted controls></video>
+                    </div>
+                    <div class="video-item"><video
+                      src="./static/results/2-depth_condition  video generation/validation-a first-person perspectiv-0bff7_merge_1_seed=999999.mp4"
+                      autoplay loop muted controls></video>
+                  </div>
+                    <div class="video-item"><video
+                        src="./static/results/2-depth_condition  video generation/validation-A young man is walking do-4c618_merge_1_seed=999999.mp4"
+                        autoplay loop muted controls></video>
+                    </div>
+                    
+                  </div>
+                  <div class="dot-overlay"></div>
+                </div>
+                <div class="video-controls">
+                  <button class="nav-button prev-btn">‹</button>
+                  <button class="nav-button next-btn">›</button>
+                </div>
+              </div>
+
+              <h4 class="title is-5">Canny-conditioned video generation</h3>
+                <div class="video-carousel-wrapper">
+                  <div class="video-carousel">
+                    <div class="video-track">
+                      <div class="video-item">
+                        <video
+                          src="./static/results/3-canny_condition video generation/validation-a cheerful, animated char-e297a_merge_2_seed=999999.mp4"
+                          autoplay loop muted controls></video>
+                      </div>
+                      <div class="video-item">
+                        <video
+                          src="./static/results/3-canny_condition video generation/validation-a first-person perspectiv-156e8_merge_2_seed=999999.mp4"
+                          autoplay loop muted controls></video>
+                      </div>
+                      <div class="video-item"><video
+                        src="./static/results/3-canny_condition video generation/validation-A chef and a woman are in-1e52d_merge_2_seed=999999.mp4"
+                        autoplay loop muted controls></video>
+                      </div>
+                      <div class="video-item"><video
+                          src="./static/results/3-canny_condition video generation/validation-A blue sports car is driv-dba9b_merge_2_seed=999999.mp4"
+                          autoplay loop muted controls></video>
+                      </div>
+                      <div class="video-item"><video
+                          src="./static/results/3-canny_condition video generation/validation-A man is standing in fron-67976_merge_2_seed=999999.mp4"
+                          autoplay loop muted controls></video>
+                      </div>
+                    </div>
+                    <div class="dot-overlay"></div>
+                  </div>
+                  <div class="video-controls">
+                    <button class="nav-button prev-btn">‹</button>
+                    <button class="nav-button next-btn">›</button>
+                  </div>
+                </div>
+
+                <h4 class="title is-5">Segmentation-conditioned video generation</h3>
+                  <div class="video-carousel-wrapper">
+                    <div class="video-carousel">
+                      <div class="video-track">
+                        <div class="video-item">
+                          <video
+                            src="./static/results/4-segment_condition video generation/validation-a large naval ship, likel-2e710_merge_3_seed=999999.mp4"
+                            autoplay loop muted controls></video>
+                        </div>
+                        <div class="video-item">
+                          <video
+                            src="./static/results/4-segment_condition video generation/validation-a serene and expansive mo-2d189_merge_3_seed=999999.mp4"
+                            autoplay loop muted controls></video>
+                        </div>
+                        
+                        <div class="video-item"><video
+                          src="./static/results/4-segment_condition video generation/validation-A man is playing an elect-049c7_merge_3_seed=999999.mp4"
+                          autoplay loop muted controls></video>
+                      </div>
+                        <div class="video-item"><video
+                            src="./static/results/4-segment_condition video generation/validation-a colorful assortment of -3c503_merge_3_seed=999999.mp4"
+                            autoplay loop muted controls></video>
+                        </div>
+                        <div class="video-item"><video
+                          src="./static/results/4-segment_condition video generation/validation-a serene and picturesque -17e0a_merge_3_seed=999999.mp4"
+                          autoplay loop muted controls></video>
+                      </div>
+
+                      </div>
+                      <div class="dot-overlay"></div>
+                    </div>
+                    <div class="video-controls">
+                      <button class="nav-button prev-btn">‹</button>
+                      <button class="nav-button next-btn">›</button>
+                    </div>
+                  </div>
+
+                <!--/Controllable video generation. -->
+
+                <!-- Video understanding. -->
+                <h3 class="title is-4">Video understanding</h3>
+                <div class="content has-text-justified">
+                  <p>
+                    Given a reference video, <span class="dnerf">OmniVDiff</span> can jointly estimate multiple aligned visual understanding outputs within a single diffusion process.
+                  </p>
+                </div>
+
+
+                
+
+                <div class="video-carousel-wrapper">
+                  <div class="video-carousel">
+                    <div class="video-track">
+                      <div class="video-item"><video
+                        src="./static/results/5-video understanding/validation-a young performer on a mo-049e6_merge_0_seed=12345.mp4"
+                        autoplay loop muted controls></video>
+                      </div>
+                      <div class="video-item"><video
+                        src="./static/results/5-video understanding/validation-a black leather briefcase-ab48d_merge_0_seed=42.mp4"
+                        autoplay loop muted controls></video>
+                    </div>
+                    <div class="video-item"><video
+                      src="./static/results/5-video understanding/validation-A black and white off-roa-d0d04_merge_0_seed=42.mp4"
+                      autoplay loop muted controls></video>
+                  </div>
+                      <div class="video-item"><video
+                          src="./static/results/5-video understanding/validation-a busy urban street scene-c949e_merge_0_seed=42.mp4"
+                          autoplay loop muted controls></video>
+                      </div>
+                      <div class="video-item"><video
+                          src="./static/results/5-video understanding/validation-a cheerful animated chara-cdc7e_merge_0_seed=42.mp4"
+                          autoplay loop muted controls></video>
+                      </div>
+                      <div class="video-item"><video
+                          src="./static/results/5-video understanding/validation-a close-up of a middle-ag-48633_merge_0_seed=42.mp4"
+                          autoplay loop muted controls></video>
+                      </div>
+                    </div>
+                    <div class="dot-overlay"></div>
+                  </div>
+                  <div class="video-controls">
+                    <button class="nav-button prev-btn">‹</button>
+                    <button class="nav-button next-btn">›</button>
+                  </div>
+                </div>
+                <!--/Video understanding. -->
+
+
+
+                <h2 class="title is-3">Applications</h2>
+
+
+                <!-- Style transfer. -->
+                <h3 class="title is-4">Video-to-video translation</h3>
+                <div class="content has-text-justified">
+                  <p>
+                    Given a reference video, <span class="dnerf">OmniVDiff</span> first estimates the corresponding depth, 
+                    which serves as a structural prior to guide scene composition. 
+                    This enables the generation of videos with diverse scene styles (e.g., winter, autumn, summer, and sunset) through text-based control.
+                  </p>
+                </div>
+                <div class="content has-text-centered">
+                  <video id="replay-video" autoplay loop muted controls width="75%">
+                    <source src="./static/applications/app1/validation-a breathtaking panoramic -391c9.mp4" type="video/mp4">
+                  </video>
+                  <video id="replay-video" autoplay loop muted controls width="75%">
+                    <source src="./static/applications/app1/app1_style.mp4" type="video/mp4">
+                  </video>
+                </div>
+                <!--/Style transfer. -->
+
+                <!-- Deblur and Super-resolution. -->
+                <h3 class="title is-4">Adaptation to new applications: Deblur and Super-resolution</h3>
+                <div class="content has-text-justified">
+                  <p>
+                    Row 1 – Video Super-Resolution:
+                    Given a low-resolution video as input, <span class="dnerf">OmniVDiff</span> generates a corresponding high-resolution output with enhanced visual details.
+                    
+                    Row 2 – Video Deblurring:
+                    Similarly, <span class="dnerf">OmniVDiff</span> can be fine-tuned for the video deblurring task, producing a sharp and clear video from a blurred input.
+                  </p>
+                </div>
+                <div class="content has-text-centered">
+                  <video id="replay-video" autoplay loop muted controls width="75%">
+                    <source src="./static/applications/app2/app2_sr2.mp4" type="video/mp4">
+                  </video>
+                  <video id="replay-video" autoplay loop muted controls width="75%">
+                    <source src="./static/applications/app2/app2_deblur2.mp4" type="video/mp4">
+                  </video>
+                </div>
+                <!--/Deblur and Super-resolution. -->
+
+                <!-- 4D Reconstruction. -->
+                <h3 class="title is-4">Scene Reconstruction</h3>
+                <div class="content has-text-justified">
+                  <p>
+                    Given a reference video, <span class="dnerf">OmniVDiff</span> estimates the corresponding depth and segmentation sequences. 
+                    These outputs can be reprojected into a 3D scene and rendered from novel viewpoints.
+                  </p>
+                </div>
+                <video id="replay-video" autoplay loop muted controls width="75%">
+                  <source src="./static/applications/app3/validation-A group of individuals is-c7efb_merge_0_seed=42.mp4" type="video/mp4">
+                </video>
+                <div class="content has-text-centered">
+                  <video id="replay-video" autoplay loop muted controls width="75%">
+                    <source src="./static/applications/app3/4d_rgb.mp4" type="video/mp4">
+                  </video>
+                </div>
+                <!--/4D Reconstruction. -->
+          </div>
+        </div>
+
+
+      </div>
+  </section>
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{xdb2025OmniVDiff,
+  author    = {Xi, Dianbing and Wang, Jiepeng and Liang, Yuanzhi and Qi, Xi and Huo, Yuchi and Wang, Rui and Zhang, Chi and Li, Xuelong},
+  title     = {OmniVDiff: Omni Controllable Video Diffusion for Generation and Understanding},
+  journal   = {arXiv preprint arXiv},
+  year      = {2025},
+}</code></pre>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="./static/videos/nerfies_paper.pdf">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+                Thanks to <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> for their excellent website templates.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
