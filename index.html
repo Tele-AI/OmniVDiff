@@ -36,6 +36,8 @@
   <script src="./static/js/index.js"></script>
 
 
+
+
   <script>
     let currentIndex = 0;
     let autoplayInterval = null;
@@ -183,26 +185,34 @@
 <body>
 
   <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+
+      <!-- Home -->
+      <a class="navbar-item" href="">
+        <span class="icon">
+          <i class="fas fa-home"></i>
+        </span>
       </a>
-    </div>
-    <div class="navbar-menu">
-      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-        <a class="navbar-item" href="">
-          <span class="icon">
-            <i class="fas fa-home"></i>
-          </span>
-        </a>
 
+      <!-- More Research -->
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">More Research</a>
 
+        <div class="navbar-dropdown">
+
+          <a class="navbar-item" href="https://tele-ai.github.io/CtrlVDiff/">
+            <span class="dnerf">CtrlVDiff</span>
+          </a>
+          <!-- 分割线（可选） -->
+          <hr class="navbar-divider">
+
+        </div>
       </div>
 
     </div>
-  </nav>
+  </div>
+</nav>
 
 
   <section class="hero">
@@ -245,7 +255,7 @@
 
 
             <div class="is-size-5 publication-authors">
-              <span class="author-block"><sup>1</sup>Zhejiang University,</span>
+              <span class="author-block"><sup>1</sup>State Key Laboratory of CAD&CG, Zhejiang University</span><br>
               <span class="author-block"><sup>2</sup>Institute of Artificial Intelligence, China Telecom (TeleAI)</span>
             </div>
 
@@ -265,7 +275,7 @@
                     <span class="icon">
                       <i class="ai ai-arxiv"></i>
                     </span>
-                    <span>arXiv</span>
+                    <span>ArXiv</span>
                   </a>
                 </span>
 
@@ -277,7 +287,18 @@
                     <span>Code</span>
                   </a>
                 </span>
+                <span class="link-block">
+                  <a href="./static/supp/AAAI2026_OmniVDiff_supplementary.pdf" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Supp</span>
+                  </a>
+                </span>
 
+<p class="venue">
+  <strong>🎉 The 40th Annual AAAI Conference on Artificial Intelligence (AAAI-2026 Main) 🍻</strong>
+</p>
               </div>
 
             </div>
@@ -286,6 +307,11 @@
       </div>
     </div>
   </section>
+
+
+
+
+
 
   <section class="hero teaser">
     <div class="container is-max-desktop">
@@ -378,7 +404,7 @@
               </p>
             </div>
 
-            <div class="video-carousel-wrapper">
+               <div class="video-carousel-wrapper">
               <div class="video-carousel">
                 <div class="video-track">
                   <div class="video-item">
@@ -387,7 +413,7 @@
                       autoplay loop muted controls></video>
                   </div>
                   <div class="video-item"><video
-                      src="./static/results/1-text to mul-modality  video generation/validation-A young woman wearing a p-4aa11.mp4"
+                      src="./static/results/1-text to mul-modality  video generation/validation-two colorful parrots perc-21f1c_merge_-1_seed=999999.mp4"
                       autoplay loop muted controls></video>
                   </div>
                   <div class="video-item"><video
@@ -395,15 +421,11 @@
                       autoplay loop muted controls></video>
                   </div>
                   <div class="video-item"><video
-                    src="./static/results/1-text to mul-modality  video generation/validation-A bald man with glasses i-70eb3.mp4"
+                    src="./static/results/1-text to mul-modality  video generation/validation-A couple is taking a self-608bf_merge_-1_seed=999999.mp4"
                     autoplay loop muted controls></video>
                 </div>
                   <div class="video-item"><video
                       src="./static/results/1-text to mul-modality  video generation/validation-a scene of two large nava-83514_merge_-1_seed=999999.mp4"
-                      autoplay loop muted controls></video>
-                  </div>
-                  <div class="video-item"><video
-                      src="./static/results/1-text to mul-modality  video generation/validation-A-young-man-with-tousled--1265a.mp4"
                       autoplay loop muted controls></video>
                   </div>
                 </div>
@@ -415,11 +437,10 @@
               </div>
             </div>
 
-
             <!--/ Text to mul-modality video generation. -->
 
 
-            <!-- Controllable video generation. -->
+                 <!-- Controllable video generation. -->
             <h3 class="title is-4">Controllable video generation</h3>
             <div class="content has-text-justified">
               <p>
@@ -437,26 +458,21 @@
                         autoplay loop muted controls></video>
                     </div>
                     <div class="video-item"><video
-                      src="./static/results/2-depth_condition  video generation/validation-a close-up view of a smal-9ce83_merge_1_seed=999999.mp4"
+                      src="./static/results/2-depth_condition  video generation/validation-A blue sports car drives -e3ca1_merge_1_seed=999999.mp4"
                       autoplay loop muted controls></video>
                     </div>
                     <div class="video-item"><video
-                        src="./static/results/2-depth_condition  video generation/validation-a man and a woman sitting-e3dec_merge_1_seed=42.mp4"
+                        src="./static/results/2-depth_condition  video generation/validation-a close-up view of a brow-5708b_merge_1_seed=999999.mp4"
                         autoplay loop muted controls></video>
                     </div>
                     <div class="video-item"><video
-                        src="./static/results/2-depth_condition  video generation/validation-a variety of beautifully -6956c_merge_1_seed=42.mp4"
+                        src="./static/results/2-depth_condition  video generation/validation-a close-up view of a pers-48038_merge_1_seed=999999.mp4"
                         autoplay loop muted controls></video>
                     </div>
                     <div class="video-item"><video
-                      src="./static/results/2-depth_condition  video generation/validation-a first-person perspectiv-0bff7_merge_1_seed=999999.mp4"
+                      src="./static/results/2-depth_condition  video generation/validation-A man is seated and speak-c7a72_merge_1_seed=999999.mp4"
                       autoplay loop muted controls></video>
                   </div>
-                    <div class="video-item"><video
-                        src="./static/results/2-depth_condition  video generation/validation-A young man is walking do-4c618_merge_1_seed=999999.mp4"
-                        autoplay loop muted controls></video>
-                    </div>
-                    
                   </div>
                   <div class="dot-overlay"></div>
                 </div>
@@ -472,7 +488,7 @@
                     <div class="video-track">
                       <div class="video-item">
                         <video
-                          src="./static/results/3-canny_condition video generation/validation-a cheerful, animated char-e297a_merge_2_seed=999999.mp4"
+                          src="./static/results/3-canny_condition video generation/validation-A man is driving a motorb-b8a89_merge_2_seed=999999.mp4"
                           autoplay loop muted controls></video>
                       </div>
                       <div class="video-item">
@@ -481,7 +497,7 @@
                           autoplay loop muted controls></video>
                       </div>
                       <div class="video-item"><video
-                        src="./static/results/3-canny_condition video generation/validation-A chef and a woman are in-1e52d_merge_2_seed=999999.mp4"
+                        src="./static/results/3-canny_condition video generation/validation-a close-up view of a blue-4d152_merge_2_seed=999999.mp4"
                         autoplay loop muted controls></video>
                       </div>
                       <div class="video-item"><video
@@ -521,11 +537,11 @@
                           autoplay loop muted controls></video>
                       </div>
                         <div class="video-item"><video
-                            src="./static/results/4-segment_condition video generation/validation-a colorful assortment of -3c503_merge_3_seed=999999.mp4"
+                            src="./static/results/4-segment_condition video generation/validation-an older man with gray ha-1b2f4_merge_3_seed=999999.mp4"
                             autoplay loop muted controls></video>
                         </div>
                         <div class="video-item"><video
-                          src="./static/results/4-segment_condition video generation/validation-a serene and picturesque -17e0a_merge_3_seed=999999.mp4"
+                          src="./static/results/4-segment_condition video generation/validation-an unfinished room with a-ca565_merge_3_seed=999999.mp4"
                           autoplay loop muted controls></video>
                       </div>
 
@@ -540,7 +556,9 @@
 
                 <!--/Controllable video generation. -->
 
-                <!-- Video understanding. -->
+
+
+                 <!-- Video understanding. -->
                 <h3 class="title is-4">Video understanding</h3>
                 <div class="content has-text-justified">
                   <p>
@@ -563,15 +581,11 @@
                         autoplay loop muted controls></video>
                     </div>
                     <div class="video-item"><video
-                      src="./static/results/5-video understanding/validation-A black and white off-roa-d0d04_merge_0_seed=42.mp4"
+                      src="./static/results/5-video understanding/validation-a close-up view of a pers-52656_merge_0_seed=42.mp4"
                       autoplay loop muted controls></video>
                   </div>
                       <div class="video-item"><video
-                          src="./static/results/5-video understanding/validation-a busy urban street scene-c949e_merge_0_seed=42.mp4"
-                          autoplay loop muted controls></video>
-                      </div>
-                      <div class="video-item"><video
-                          src="./static/results/5-video understanding/validation-a cheerful animated chara-cdc7e_merge_0_seed=42.mp4"
+                          src="./static/results/5-video understanding/validation-a chess game in progress,-cda7f_merge_0_seed=999999.mp4"
                           autoplay loop muted controls></video>
                       </div>
                       <div class="video-item"><video
@@ -587,6 +601,64 @@
                   </div>
                 </div>
                 <!--/Video understanding. -->
+
+            <h2 class="title is-3">Comparison: Generation and Understanding</h2>
+
+            <!-- Controllable video generation. -->
+            <h3 class="title is-4">Video generation</h3>
+
+            <img src="./static/images/table_compare_condition_generate.png" alt="对比表格" style="display:block; margin: 0 auto; max-width:100%; height:auto;">
+
+            <video id="replay-video" autoplay loop muted controls width="75%">
+              <source src="./static/results/6-compare/compare_depth_generation.mp4" type="video/mp4">
+            </video>
+
+            <div class="content has-text-justified">
+              <p>
+                <span class="dnerf">OmniVDiff</span> is compared with state-of-the-art methods for depth-guided video generation, including 
+                Control-A-Video, ControlVideo, CogVideoX-ControlNet, and VideoX-Fun.
+              </p>
+            </div>
+
+            <video id="replay-video" autoplay loop muted controls width="75%">
+              <source src="./static/results/6-compare/compare_canny_generation.mp4" type="video/mp4">
+            </video>
+
+            <div class="content has-text-justified">
+              <p>
+                We compare <span class="dnerf">OmniVDiff</span> with state-of-the-art methods for Canny-guided video generation, including 
+                 Control-A-Video, ControlVideo, CogVideoX-ControlNet, and VideoX-Fun.
+              </p>
+            </div>
+
+            <!--video understanding. -->
+            <h3 class="title is-4">Video understanding</h3>
+            <!-- <img src="./static/images/table_compare_understanding.png" alt="对比表格" style="display:block; margin: 0 auto; max-width:75%; height:auto;"> -->
+            <div style="height:40px;"></div> <!-- 强行留40px空白 -->
+            <video id="replay-video" autoplay loop muted controls width="75%">
+              <source src="./static/results/6-compare/assemble_est_depth_sample.mp4" type="video/mp4">
+            </video>
+
+            <div class="content has-text-justified">
+              <p>
+                Video Depth Anything, serving as our expert model with a ViT-Small backbone. 
+                <span class="dnerf">OmniVDiff-Syn</span> (Ours-Syn) denotes the version trained with a small amount of additional synthetic data.
+              </p>
+            </div>
+
+
+            <!-- <img src="./static/images/table_compare_understanding_seg.png" alt="对比表格" style="display:block; margin: 0 auto; max-width:75%; height:auto;"> -->
+            <div style="height:40px;"></div> <!-- 强行留40px空白 -->
+            <video id="replay-video" autoplay loop muted controls width="75%">
+              <source src="./static/results/6-compare/assemble_est_seg.mp4" type="video/mp4">
+            </video>
+
+            <div class="content has-text-justified">
+              <p>
+                Semantic-SAM, serving as our expert model. 
+                <span class="dnerf">OmniVDiff-Syn</span> (Ours-Syn) denotes the version trained with a small amount of additional synthetic data.
+              </p>
+            </div>
 
 
 
