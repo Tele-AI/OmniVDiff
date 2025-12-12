@@ -53,7 +53,7 @@
 
 ## 📦 Environment Setup
 
-1. Create a conda environment named `omni`:
+1. Create a conda environment named `ovdiff`:
    ```bash
    conda create -n ovdiff python=3.10.9
    conda activate ovdiff
